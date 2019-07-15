@@ -33,20 +33,6 @@ function Block:draw()
 end
 
 
-function Block:drawPreview(sidebar)
-    local description = blockDescriptions[self.shape][self.rotation]
-    local size = self.size / 2
-     for y = 1, 4 do
-        for x = 1, 4 do
-            if description[y][x] ~= ' ' then
-                love.graphics.setColor(colors[description[y][x]])
-                love.graphics.rectangle('fill', x * size + (love.graphics.getWidth() - (sidebar.width-size*2)) + 3, y * size, size-1, size-1)
-            end
-        end
-    end
-end
-
-
 function Block:save(grid)
     local description = blockDescriptions[self.shape][self.rotation]
     for y = 1, 4 do

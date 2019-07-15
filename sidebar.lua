@@ -29,6 +29,20 @@ function Sidebar:draw()
     love.graphics.printf('Score: ' .. game.score, windowWidth - offset, 150, 1000, 'left')
     love.graphics.printf('High Score: ' .. game.highscore, windowWidth - offset, 150 + (verticalSpacing * 1), 1000, 'left')
     love.graphics.printf('Level: ' .. game.level, windowWidth - offset, 150 + (verticalSpacing * 2), 1000, 'left')
-    --love.graphics.printf("FPS: "..tostring(love.timer.getFPS( )), windowWidth - offset, 150 + (verticalSpacing * 3), 1000, 'left')
+
+    -- Draw the preview block.
+    local description = blockDescriptions[nextBlock.shape][nextBlock.rotation]
+    local size = nextBlock.size / 2
+     for y = 1, 4 do
+        for x = 1, 4 do
+            if description[y][x] ~= ' ' then
+                love.graphics.setColor(colors[description[y][x]])
+                love.graphics.rectangle('fill', x * size + (love.graphics.getWidth() - (self.width-size*2)) + 3, y * size, size-1, size-1)
+            end
+        end
+    end
 end
+
+
+
 

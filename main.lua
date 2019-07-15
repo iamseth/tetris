@@ -6,11 +6,6 @@ require('block')
 require('sidebar')
 
 
-local grid
-local currentBlock
-local nextBlock
-local sidebar
-
 function reset()
     game:reset()
     grid = Grid:new()
@@ -20,11 +15,13 @@ function reset()
     currentBlock = Block:new()
 end
 
+
 function love.load()
     game = Game:new()
     love.mouse.setVisible(false)
     reset()
 end
+
 
 function love.keypressed(key)
     if key == 'q' then
@@ -131,17 +128,15 @@ end
 
 function love.draw()
     sidebar:draw()
-
     if game.state ==  'paused' then
-        drawPauseMenu()
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.print('Game is paused.', 100, 100)
         return
     end
-    
-    nextBlock:drawPreview(sidebar)
-
     grid:draw()
     if game.state == 'over' then
-        drawEndGame()
+        love.graphics.setColor(255, 255, 255)
+        love.graphics.print('fucked', 100, 100)
         return
     end
     currentBlock:draw()
@@ -161,18 +156,6 @@ function validMove(newX, newY, rotation)
         end
     end
     return true
-end
-
-
-function drawPauseMenu()
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print('Game is paused.', 100, 100)
-end
-
-
-function drawEndGame()
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.print('fucked', 100, 100)
 end
 
 
