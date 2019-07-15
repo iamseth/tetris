@@ -10,7 +10,6 @@ function reset()
     game:reset()
     grid = Grid:new()
     sidebar = Sidebar:new()
-
     nextBlock = Block:new()
     currentBlock = Block:new()
 end
@@ -33,11 +32,7 @@ function love.keypressed(key)
 
     -- Handle pausing the game.
     if key == 'p' then
-        if game.state == 'running' then
-            game.state = 'paused'
-        elseif game.state == 'paused' then
-            game.state = 'running'
-        end
+        game.state = game.state == 'running' and 'paused' or 'running'
     end
 
     -- Don't continue unless the game is in a running state.
