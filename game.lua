@@ -3,21 +3,21 @@
 Game = {}
 Game.__index = Game
 
-local speed = { 20, 30, 60, 110, 160 } -- TODO find a way to compute this
-local pointsPerLine = 100
-local tetrisMultiplier = 2
-
-
 function Game:new()
     local this = {
         score = 0,
         timer = 0,
-        level = 1,
+        level = 0,
         state = 'running',
-        magickNumber = 10,
         highscore = 0,
     }
 
+    local settings = love.filesystem.load('settings.lua')
+    if settings then
+        settings()
+        this.level = level -- luacheck: ignore
+    end
+    
     local data = love.filesystem.load('highscore.lua')
     if data then
         data()
@@ -28,17 +28,23 @@ function Game:new()
 end
 
 
--- Determine the number of seconds that must elapse before a block falls.
-function Game:getSeconds()
-    return self.magickNumber / speed[self.level]
-end
 
+function Game:reset()
+    self.score = 0
+    self.timer = 0
+    self.state = 'running'
+    local data = love.filesystem.load('highscore.lua')
+    if data then
+        data()
+        self.highscore = highscore -- luacheck: ignore
+    end
+end
 
 
 -- Determine if it's time to move. -- TODO change the name of this.
 function Game:canMove(dt)
     self.timer = self.timer + dt
-    if self.timer > (self.magickNumber / speed[self.level]) then
+    if self.timer > (0.5 + ((self.level + 1) * -0.05)) then
         self.timer = 0
         return true
     end
@@ -48,11 +54,16 @@ end
 
 -- Increment the score for the number of lines given.
 function Game:addScore(lines)
-    local multiplier = 1
-    if lines == 4 then
-        multiplier = tetrisMultiplier
+    if lines == 1 then
+        points = 40 * (self.level + 1) 
+    elseif lines == 2 then
+        points = 100 * (self.level + 1) 
+    elseif lines == 3 then
+        points = 300 * (self.level + 1) 
+    elseif lines == 4 then
+        points = 1200 * (self.level + 1) 
     end
-    self.score = self.score + pointsPerLine * lines * multiplier
+    self.score = self.score + points
 end
 
 

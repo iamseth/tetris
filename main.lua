@@ -11,10 +11,8 @@ local currentBlock
 local nextBlock
 local sidebar
 
-
-
-function love.load()
-    game = Game:new()
+function reset()
+    game:reset()
     grid = Grid:new()
     sidebar = Sidebar:new()
 
@@ -22,13 +20,18 @@ function love.load()
     currentBlock = Block:new()
 end
 
+function love.load()
+    game = Game:new()
+    love.mouse.setVisible(false)
+    reset()
+end
 
 function love.keypressed(key)
     if key == 'q' then
         love.event.quit()
     end
     if key == 'escape' then
-        love.event.quit('restart')
+        reset()
     end
 
     -- Handle pausing the game.
@@ -92,10 +95,17 @@ end
 
 
 function love.update(dt)
+
+    if not love.window.hasFocus() then
+        game.state = 'paused'
+        return
+    end
+
     -- Only go forward if running.
     if game.state ~= 'running' then
         return
     end
+                game:saveScore()
 
     -- Determine if enough time has elapsed to move the block. Also figure out if next move is valid.
     if game:canMove(dt) then
@@ -108,7 +118,6 @@ function love.update(dt)
             -- if the new current block isn't valid, it's game over.
             if not validMove(currentBlock.x, currentBlock.y, currentBlock.rotation) then
                 game.state = 'over'
-                game:saveScore()
             end
             nextBlock = Block:new()
         end
