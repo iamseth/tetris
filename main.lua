@@ -72,7 +72,7 @@ function love.keypressed(key)
         end
         
         -- Save the block to the grid, swap the next block into the current block and create a new next/preview block.
-        currentBlock:save(grid)
+        currentBlock:save()
         currentBlock = nextBlock
         nextBlock = Block:new()
     end
@@ -98,7 +98,8 @@ function love.update(dt)
     if game.state ~= 'running' then
         return
     end
-                game:saveScore()
+
+    game:saveScore()
 
     -- Determine if enough time has elapsed to move the block. Also figure out if next move is valid.
     if game:canMove(dt) then
@@ -124,7 +125,7 @@ end
 
 function love.draw()
     sidebar:draw()
-    if game.state ==  'paused' then
+    if game.state == 'paused' then
         love.graphics.setColor(255, 255, 255)
         love.graphics.print('Game is paused.', 100, 100)
         return
@@ -132,7 +133,7 @@ function love.draw()
     grid:draw()
     if game.state == 'over' then
         love.graphics.setColor(255, 255, 255)
-        love.graphics.print('fucked', 100, 100)
+        love.graphics.print('Game over!', 100, 100)
         return
     end
     currentBlock:draw()

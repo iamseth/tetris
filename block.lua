@@ -33,7 +33,7 @@ function Block:draw()
 end
 
 
-function Block:save(grid)
+function Block:save()
     local description = blockDescriptions[self.shape][self.rotation]
     for y = 1, 4 do
         for x = 1, 4 do
