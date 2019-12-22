@@ -10,6 +10,7 @@ function Game:new()
         level = 0,
         state = 'running',
         highscore = 0,
+        start_time = 0,
     }
 
     local settings = love.filesystem.load('settings.lua')
@@ -32,6 +33,7 @@ end
 function Game:reset()
     self.score = 0
     self.timer = 0
+    self.start_time = os.time(os.date("!*t"))
     self.state = 'running'
     local data = love.filesystem.load('highscore.lua')
     if data then

@@ -19,6 +19,7 @@ end
 
 function Sidebar:draw()
     love.graphics.setFont(self.font)
+    local time = os.time(os.date("!*t")) - game.start_time
     local windowWidth = love.graphics.getWidth()
     local windowHeight = love.graphics.getHeight()
     love.graphics.setColor(self.backgroundColor)
@@ -29,6 +30,7 @@ function Sidebar:draw()
     love.graphics.printf('Score: ' .. game.score, windowWidth - offset, 150, 1000, 'left')
     love.graphics.printf('High Score: ' .. game.highscore, windowWidth - offset, 150 + (verticalSpacing * 1), 1000, 'left')
     love.graphics.printf('Level: ' .. game.level, windowWidth - offset, 150 + (verticalSpacing * 2), 1000, 'left')
+    love.graphics.printf('Time: ' .. time, windowWidth - offset, 150 + (verticalSpacing * 3), 1000, 'left')
 
     -- Draw the preview block.
     local description = blockDescriptions[nextBlock.shape][nextBlock.rotation]
